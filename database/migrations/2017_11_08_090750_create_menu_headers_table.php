@@ -21,6 +21,7 @@ class CreateMenuHeadersTable extends Migration
             $table->integer('position')->default(0);
             $table->enum('target', ['_blank', '_self', '_parent', '_top']);
             $table->longtext('url')->nullable();
+            $table->string('route')->nullable();
         });
     }
 
