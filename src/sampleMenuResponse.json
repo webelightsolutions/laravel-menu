@@ -1,0 +1,66 @@
+[
+	{
+		"name": "Header",
+		"is_parent": true,
+		"position": 1,
+		"target": "_blank",
+		"url": null,
+		"menuSubHeader": [
+			{
+				"name": "SubHeader",
+				"is_parent": true,
+				"position": 1,
+				"target": "_blank",
+				"url": null,
+				"menuItems": [
+					{
+						"name": "Item1",
+						"is_parent": false,
+						"position": 1,
+						"target": "_blank",
+						"url": null
+					},
+					{
+						"name": "Item2",
+						"is_parent": false,
+						"position": 2,
+						"target": "_blank",
+						"url": null
+					}
+				]
+			}
+		]
+	},
+	{
+		"name": "Header2",
+		"is_parent": true,
+		"position": 1,
+		"target": "_blank",
+		"url": null,
+		"menuSubHeader": [
+			{
+				"name": "SubHeader",
+				"is_parent": true,
+				"position": 1,
+				"target": "_blank",
+				"url": null,
+				"menuItems": [
+					{
+						"name": "Item1",
+						"is_parent": false,
+						"position": 1,
+						"target": "_blank",
+						"url": null
+					},
+					{
+						"name": "Item2",
+						"is_parent": false,
+						"position": 2,
+						"target": "_blank",
+						"url": null
+					}
+				]
+			}
+		]
+	}
+]

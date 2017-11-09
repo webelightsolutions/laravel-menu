@@ -1,0 +1,14 @@
+{
+    "name": "webelightdev/laravel-menu",
+    "description": "Laravel dynamic menu generation package",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yash Barot",
+            "email": "yashce04@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
