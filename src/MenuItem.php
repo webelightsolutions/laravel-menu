@@ -13,8 +13,8 @@ class MenuItem extends Model
         $this->belongsTo(MenuSubHeader::class, 'menu_sub_header_id');
     }
 
-    public function menuItems()
+    public function menuHeader()
     {
-        $this->hasMany(MenuItem::class);
+        $this->hasMany(MenuHeader::class);
     }
 }

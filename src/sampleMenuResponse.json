@@ -1,5 +1,6 @@
 [
 	{
+		"id": 1,
 		"name": "Header",
 		"is_parent": true,
 		"position": 1,
@@ -7,6 +8,8 @@
 		"url": null,
 		"menuSubHeader": [
 			{
+				"id":1,
+				"men_header_id":1,
 				"name": "SubHeader",
 				"is_parent": true,
 				"position": 1,
@@ -14,6 +17,8 @@
 				"url": null,
 				"menuItems": [
 					{
+						"id":1,
+						"menu_sub_header_id": 1,
 						"name": "Item1",
 						"is_parent": false,
 						"position": 1,
@@ -21,6 +26,37 @@
 						"url": null
 					},
 					{
+						"id":2,
+						"menu_sub_header_id": 1,
+						"name": "Item2",
+						"is_parent": false,
+						"position": 2,
+						"target": "_blank",
+						"url": null
+					}
+				]
+			},
+			{
+				"id":2,
+				"men_header_id":1,
+				"name": "SubHeader",
+				"is_parent": true,
+				"position": 1,
+				"target": "_blank",
+				"url": null,
+				"menuItems": [
+					{
+						"id":1,
+						"menu_sub_header_id": 1,
+						"name": "Item1",
+						"is_parent": false,
+						"position": 1,
+						"target": "_blank",
+						"url": null
+					},
+					{
+						"id":2,
+						"menu_sub_header_id": 1,
 						"name": "Item2",
 						"is_parent": false,
 						"position": 2,
@@ -32,6 +68,7 @@
 		]
 	},
 	{
+		"id":2,
 		"name": "Header2",
 		"is_parent": true,
 		"position": 1,

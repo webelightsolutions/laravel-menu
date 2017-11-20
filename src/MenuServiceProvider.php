@@ -2,7 +2,7 @@
 namespace Webelightdev\LaravelMenu;
 
 use Illuminate\Support\ServiceProvider;
-use Webelightdev\LaravelMenu\Menu;
+use Illuminate\Support\Facades\View;
 
 class MenuServiceProvider extends ServiceProvider
 {
@@ -16,7 +16,11 @@ class MenuServiceProvider extends ServiceProvider
         // Config
         //$this->publishes([__DIR__.'/../config/menu.php' => config_path('menu.php')]);
         // Migration
+       
+        
         $this->publishes([__DIR__.'/../database/migrations' => $this->app->databasePath().'/migrations'], 'migrations');
+
+        include __DIR__.'/routes.php';
     }
     /**
      * Register the application services.
@@ -25,10 +29,11 @@ class MenuServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(Menu::class, function () {
-            return Menu::new();
+       /* $this->app->bind(MenuBuilder::class, function () {
+            return MenuBuilder::new();
         });
-
-        $this->app->alias(Menu::class, 'menu');
+*/
+        $this->app->alias(MenuBuilder::class, 'menu');
+        $this->app->make('Webelightdev\LaravelMenu\MenuBuilder');
     }
 }
