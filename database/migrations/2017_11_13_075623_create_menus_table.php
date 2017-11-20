@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMenuHeadersTable extends Migration
+class CreateMenusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class CreateMenuHeadersTable extends Migration
      */
     public function up()
     {
-        Schema::create('menu_headers', function (Blueprint $table) {
+        Schema::create('menus', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
             $table->string('name');
-            $table->boolean('is_parent')->default(true);
-            $table->integer('position')->default(0);
-            $table->enum('target', ['_blank', '_self', '_parent', '_top']);
-            $table->longtext('url')->nullable();
-            $table->string('route')->nullable();
         });
     }
 
@@ -32,6 +27,6 @@ class CreateMenuHeadersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menu_headers');
+        Schema::dropIfExists('menus');
     }
 }

@@ -17,7 +17,7 @@ class CreateMenuItemsTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->integer('menu_sub_header_id')->unsigned()->index();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->boolean('is_parent')->default(true);
             $table->integer('position')->default(0);
             $table->enum('target', ['_blank', '_self', '_parent', '_top']);
