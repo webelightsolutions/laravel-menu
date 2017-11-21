@@ -27,9 +27,9 @@ class MenuServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(MenuBuilder::class, function () {
+        /*$this->app->bind(MenuBuilder::class, function () {
             return MenuBuilder::new();
-        });
+        });*/
 
         $this->app->alias(MenuBuilder::class, 'menu');
         $this->app->make('Webelightdev\LaravelMenu\MenuBuilder');
