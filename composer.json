@@ -9,6 +9,11 @@
             "email": "yashce04@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Webelightdev\\LaravelMenu\\": "src"
+        }
+    },
     "minimum-stability": "dev",
     "require": {}
 }
