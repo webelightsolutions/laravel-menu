@@ -14,7 +14,7 @@ class MenuServiceProvider extends ServiceProvider
     public function boot()
     {
         // Config
-        $this->publishes([__DIR__.'/../config/menu.php' => config_path('menu.php')]);
+      //  $this->publishes([__DIR__.'/../config/laravel-menu.php' => config_path('laravel-menu.php')]);
         // Migration
         $this->publishes([__DIR__.'/../database/migrations' => $this->app->databasePath().'/migrations'], 'migrations');
 
