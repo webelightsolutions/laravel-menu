@@ -17,6 +17,8 @@ class CreateMenusTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->string('name');
+            $table->integer('model_id')->unsigned()->nullable()->index()->comment('Model id');
+            $table->string('model_type')->nullable()->index()->comment('Model Name');
         });
     }
 
