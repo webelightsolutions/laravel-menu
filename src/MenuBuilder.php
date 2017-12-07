@@ -6,6 +6,7 @@ use Illuminate\Database\QueryException;
 use Webelightdev\LaravelMenu\MenuHeader;
 use Webelightdev\LaravelMenu\MenuItem;
 use Webelightdev\LaravelMenu\MenuSubHeader;
+use Webelightdev\LaravelMenu\MenuEntities;
 use Webelightdev\LaravelMenu\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,12 +22,13 @@ class MenuBuilder
 {
     protected $menuHeader;
 
-    public function __construct(MenuHeader $menuHeader, Menu $menu, MenuItem $menuItem, MenuSubHeader $menuSubHeader)
+    public function __construct(MenuHeader $menuHeader, Menu $menu, MenuItem $menuItem, MenuSubHeader $menuSubHeader, MenuEntities $menuEntities)
     {
         $this->menuHeader = $menuHeader;
         $this->menu = $menu;
         $this->menuItem = $menuItem;
         $this->menuSubHeader = $menuSubHeader;
+        $this->menuEntities = $menuEntities;
     }
 
     public function store(Request $request)
@@ -136,8 +138,6 @@ class MenuBuilder
 
     public function createNewMenuDetails($model, $data)
     {
-
-        
         try {
             $newGenratedMenu = $model->create($data);
         } catch (Exception $e) {
@@ -160,9 +160,36 @@ class MenuBuilder
         $this->menuItem->whereIn('menu_sub_header_id', $toBeDeleteItems)->delete();
     }
 
+    // public function get($entityType, $entityId)
+    // {
+    //     if (isset($entityType)) {
+    //         if ($entityType == 'menu' && isset($entityId)) {
+    //             $menus = $this->menuHeader->where('entity_type', $entityType)->where('entity_id', $entityId)->first();
+    //         } else {
+    //             $menus = $this->menuHeader->join('menu_entities')->where('entity_type', $entityType)->where('entity_id', $entityId)->get();
+    //         }
+    //     } else {
+    //         $menu = $this->menuHeader->where('entity_type', $entityType)->get();
+    //     }
+    //     return view('laravel-slider::show', compact('slider'));
+    // }
+
+    // public function sliderEntities(Request $request)
+    // {
+    //     DB::beginTransaction();
+    //     try {
+    //         $this->menuEntities->create($request->all());
+    //     } catch (Exception $e) {
+    //         return redirect('/menu')->with('error', $e->getMessage())->withInput();
+    //     }
+    //     DB::commit();
+    //     return redirect('/menu')->with('success', 'Menu stored successfully.');
+    // }
+    
     public function getBy($attribute, $value)
     {
-        $menu = $this->menuHeader->where($attribute, $value)->with('menuSubHeader.menuItems')->get();
+        $menu = $this->menu->where($attribute, $value)->with('menuHeaders.menuSubHeaders.menuItems')->get();
+
         return response()->json($menu);
     }
 }

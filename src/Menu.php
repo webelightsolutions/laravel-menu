@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['menu_type', 'institute_id'];
 
     public function menuHeaders()
     {
