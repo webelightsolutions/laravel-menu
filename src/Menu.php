@@ -10,7 +10,7 @@ class Menu extends Model
 
     public function menuHeaders()
     {
-        return $this->hasMany(MenuHeader::class);
+        return $this->hasMany(MenuHeader::class)->orderBy('position');
     }
 
     public function menuItems()
