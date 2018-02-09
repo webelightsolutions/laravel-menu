@@ -1,22 +1,14 @@
 <?php
+
 namespace Webelightdev\LaravelMenu;
 
-use Illuminate\Database\QueryException;
 /*use Illuminate\Support\Facades\Request;*/
-use Webelightdev\LaravelMenu\MenuHeader;
-use Webelightdev\LaravelMenu\MenuItem;
-use Webelightdev\LaravelMenu\MenuSubHeader;
-use Webelightdev\LaravelMenu\MenuEntities;
-use Webelightdev\LaravelMenu\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Route;
 
 /**
- * Menu
+ * Menu.
  */
 class MenuBuilder
 {
@@ -33,8 +25,8 @@ class MenuBuilder
 
     public function store(Request $request)
     {
-         /*$menu = $this->menuHeader->where('menu_id', 1)->with('menuSubHeaders.menuItems')->get();
-         return response()->json($menu);*/
+        /*$menu = $this->menuHeader->where('menu_id', 1)->with('menuSubHeaders.menuItems')->get();
+        return response()->json($menu);*/
 
         $result = [];
         $menuHeaders = $request->all();
@@ -45,6 +37,7 @@ class MenuBuilder
             } catch (Exception $e) {
                 DB::rollback();
                 $result['error'] = 'Error to Saving Menu Details';
+
                 return $result;
             }
             foreach ($menuHeader['menuSubHeader'] as $menuSubHeader) {
@@ -53,6 +46,7 @@ class MenuBuilder
                 } catch (Exception $e) {
                     DB::rollback();
                     $result['error'] = 'Error to Saving menu details';
+
                     return $result;
                 }
                 foreach ($menuSubHeader['menuItems'] as $menuItem) {
@@ -61,12 +55,14 @@ class MenuBuilder
                     } catch (Exception $e) {
                         DB::rollback();
                         $result['error'] = 'Error to Saving menu items details';
+
                         return $result;
                     }
                 }
             }
         }
         DB::commit();
+
         return response()->json(['message' => 'Menu created successfully.']);
     }
 
@@ -86,26 +82,26 @@ class MenuBuilder
                 $menuHeaderCreated = $this->createNewMenuDetails($this->menuHeader, $menuHeader);
             }
 
-        //Update Or Create menuSubHeader Details
+            //Update Or Create menuSubHeader Details
             foreach ($menuHeader['menu_sub_headers'] as $menuSubHeader) {
                 if (array_has($menuSubHeader, 'id')) {
                     $existMenuSubHeader = $this->menuSubHeader->where('menu_header_id', $menuHeader['id'])->where('id', $menuSubHeader['id'])->first();
 
                     $this->toDeleteVariousMenuDetails($menuHeader['menu_sub_headers'], $this->menuSubHeader->where('menu_header_id', $menuHeader['id']), 'id');
-    
+
                     $menuSubHeaderCreated = $this->updateMenuDetails($menuSubHeader, $this->menuSubHeader, $existMenuSubHeader);
                 } else {
                     $menuSubHeaderCreated = $this->createNewMenuDetails($menuHeaderCreated->menuSubHeaders(), $menuSubHeader);
                 }
-             
-        //Update Or Create menuItems Details
+
+                //Update Or Create menuItems Details
 
                 foreach ($menuSubHeader['menu_items'] as $menuItem) {
                     if (array_has($menuItem, 'id')) {
                         $existMenuSubItem = $this->menuItem->where('menu_sub_header_id', $menuSubHeader['id'])->where('id', $menuItem['id'])->first();
 
                         $this->toDeleteVariousMenuDetails($menuSubHeader['menu_items'], $this->menuItem->where('menu_sub_header_id', $menuSubHeader['id']), 'id');
-            
+
                         $menuHeaderCreated = $this->updateMenuDetails($menuItem, $this->menuItem, $existMenuSubItem);
                     } else {
                         $this->createNewMenuDetails($menuSubHeaderCreated->menuItems(), $menuItem);
@@ -117,23 +113,24 @@ class MenuBuilder
 
     public function updateMenuDetails($data, $model, $existMenuHeader)
     {
-       
         $newUpdatedMenu = [];
 
         if (!$existMenuHeader) {
             $result['error'] = 'Menu header details does not exists.';
+
             return $result;
         }
 
         $newUpdatedMenu = $existMenuHeader->fill($data);
         try {
-             $newUpdatedMenu->save();
+            $newUpdatedMenu->save();
         } catch (Exception $e) {
             $result['error'] = 'Error to updating menu details';
+
             return $result;
         }
-        
-            return $newUpdatedMenu;
+
+        return $newUpdatedMenu;
     }
 
     public function createNewMenuDetails($model, $data)
@@ -142,9 +139,10 @@ class MenuBuilder
             $newGenratedMenu = $model->create($data);
         } catch (Exception $e) {
             $result['error'] = 'Error to creating new menu';
+
             return $result;
         }
-        
+
         return $newGenratedMenu;
     }
 
@@ -185,11 +183,31 @@ class MenuBuilder
     //     DB::commit();
     //     return redirect('/menu')->with('success', 'Menu stored successfully.');
     // }
-    
+
     public function getBy($attribute, $value)
     {
         $menu = $this->menu->where($attribute, $value)->with('menuHeaders.menuSubHeaders.menuItems')->get();
 
         return response()->json($menu);
+    }
+
+    public function gerByUrl()
+    {
+        $currentPath = Route::getFacadeRoot()->current()->uri();
+
+        $getUrlFromMenuHeader = $this->menuHeader->where('url', '/'.$currentPath);
+        $getUrlFromMenuSubHeader = $this->menuSubHeader->where('url', '/'.$currentPath);
+
+        if ($getUrlFromMenuHeader) {
+            $menuHeaderId = $getUrlFromMenuHeader->pluck('id')->first();
+            $menuSubHeader = $this->menuSubHeader->where('menu_header_id', $menuHeaderId)->orderBy('position')->get();
+
+            return $menuSubHeader;
+        } elseif ($getUrlFromMenuSubHeader) {
+            $menuSubHeaderId = $getUrlFromMenuSubHeader->pluck('id')->all();
+            $menuSubHeaderItem = $this->menuItem->whereIn('menu_sub_header_id', $menuSubHeaderId)->get();
+
+            return $menuSubHeaderItem;
+        }
     }
 }

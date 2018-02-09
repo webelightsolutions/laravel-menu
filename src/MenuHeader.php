@@ -17,4 +17,9 @@ class MenuHeader extends Model
     {
         return $this->hasMany(MenuItem::class);
     }
+
+    public function menus()
+    {
+        return $this->belongsTo(Menu::class, 'menu_id');
+    }
 }
